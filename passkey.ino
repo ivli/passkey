@@ -12,11 +12,11 @@ static char password[KBufSize] = {0};
 void blink_error()
 {
   for (unsigned i = 0; i < KBlinkError; ++i) {
-    digitalWrite(LED_BUILTIN, HIGH);
     delay(100);
     digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, LOW);
   }
-
 }
 
 void setup() {
@@ -62,7 +62,7 @@ void loop() {
 
     while (Serial.available() > 0) {
       buf[size++] = Serial.read();
-      
+
       if (size == KBufSize) {
         Serial.write("passw too long\n");
         blink_error();
