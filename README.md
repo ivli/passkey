@@ -1,4 +1,4 @@
-A simplistic string manager. The whole idea is snatched from "the bad-stick".
+A simplistic string manager. The whole idea is snatched from <a href=https://en.wikipedia.org/wiki/BadUSB> badUSB </a>. 
 I use 5$ cheap clone of "Leonardo" but I guess any ATMEGA32U4 based Arduino should work.    
 Upon insertion into USB socket the device pretends to be a keyboard and sends a sequence of symbols stored in EEPROM.
 Actually it is not have to be a password but might be some sort of command say "sudo reboot now" :-)
