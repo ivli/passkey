@@ -1,5 +1,5 @@
-Once upon a time when our IT guys introduced new password rules so it shall be at least 14 long, contain almost all sort of symbols and changed every 6 weeks. 
-exactly two solutions came into my mind: compose an excell sheet of passwords and dates, print and put on the wall -- phew, or benefit from being a software engineer. This repository shows the the latter one. 
+Once upon a time when our IT guys introduced new password rules so it shall be at least 14 symbols long, contain almost all sort of symbols and changed every 6 weeks. 
+Two solutions came into my mind: compose an excel sheet of passwords and dates, print it, and put a copy on the wall -- but I have to have this paper akways with me and type password myself; or benefit from being a software engineer. This repository shows the the latter one. 
 A simplistic string manager. The whole idea is snatched from <a href=https://en.wikipedia.org/wiki/BadUSB> badUSB </a>. 
 I use 3.5$ cheap clone of "Leonardo" but I guess any ATMEGA32U4 based Arduino should work.    
 Upon insertion into USB socket the device pretends to be a keyboard and sends a sequence of symbols stored in EEPROM.
