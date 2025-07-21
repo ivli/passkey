@@ -6,6 +6,6 @@ Reprogramming can get done via Serial connectivity:
   sending just 'e' would erase entire EEPROM; 
   sending 'p=string' would store all symbols after 'p=' in EEPROM
 
-<img width="1352" height="935" alt="image" src="https://github.com/user-attachments/assets/2f80a15a-c5e9-4fce-881d-9e1507aedbaf" />
+<img width="640" alt="image" src="https://github.com/user-attachments/assets/2f80a15a-c5e9-4fce-881d-9e1507aedbaf" />
 
 That is.
