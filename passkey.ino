@@ -47,7 +47,7 @@ void loop() {
 
   if (!pass && length) {
 
-    digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
+    digitalWrite(LED_BUILTIN, HIGH);
 
     Keyboard.write(password, strlen(password));
 
