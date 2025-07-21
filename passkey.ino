@@ -1,27 +1,44 @@
 #include <EEPROM.h>
 #include "Keyboard.h"
 
-static char password[256] = {0};
-
-const int address = 0x0;
+static const size_t KBufSize = 256;
+static const int KEepROMaddr = 0x0;
+static const int KBlinkError = 4;
 byte length = 0;
 bool pass = 0;
 
+static char password[KBufSize] = {0};
 
+void blink_error()
+{
+  for (unsigned i = 0; i < KBlinkError; ++i) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+
+}
 
 void setup() {
-  // open the serial port:
+   // open the serial port
   Serial.begin(9600);
-  // initialize control over the keyboard:
-  Keyboard.begin();  
+   // initialize control over the keyboard
+  Keyboard.begin();
+
   pinMode(LED_BUILTIN, OUTPUT);
-  length = EEPROM.read(address);
+
+  length = EEPROM.read(KEepROMaddr);
 
   if (!length) {
     Serial.write("No password programmed\n");
   } else {
+    if (length >= KBufSize) {
+      blink_error();
+      length = KBufSize - 1;
+    }
+
     for (int i = 0 ; i < length; ++i)
-      password[i] = EEPROM.read(address + 1 + i);
+      password[i] = EEPROM.read(KEepROMaddr + 1 + i);
   }
 }
 
@@ -40,39 +57,34 @@ void loop() {
 
     pass = true;
   } else {
-    enum command_t{nop_e, erase_e, programm_e} command = nop_e;
-
-    char buf[1024]={0};
-    unsigned size=0;
+    char buf[KBufSize]={0};
+    unsigned size = 0;
 
     while (Serial.available() > 0) {
       buf[size++] = Serial.read();
+      
+      if (size == KBufSize) {
+        Serial.write("passw too long\n");
+        blink_error();
+        return;
+      }
     }
-    
-    Serial.write(buf, size);
     
     if (1 == size) {
       if (buf[0] == 'e')
-        command = erase_e;
-    } else if (size > 2 && buf[0] == 'p' && buf[1] == '=') {
-      for (unsigned i=0; i < size; ++i)
-        password[i] = buf[i+2];
-
-      command = programm_e;  
-    }
-
-    switch (command) {
-      case erase_e: {
         digitalWrite(LED_BUILTIN, HIGH);
         Serial.write("Erasing eprom...");
 
-        for (int i = 0 ; i < EEPROM.length(); i++)
+        for (uint16_t i = 0 ; i < EEPROM.length(); i++)
           EEPROM.write(i, 0);
         
         digitalWrite(LED_BUILTIN, LOW);
         Serial.write("Done");
-      }; break;
-    case programm_e: 
+    } else if (size > 2 && buf[0] == 'p' && buf[1] == '=') {
+
+      for (uint16_t i = 0; i < size; ++i)
+        password[i] = buf[i+2];
+
         digitalWrite(LED_BUILTIN, HIGH);
         Serial.write("Programming...");
         Serial.write(buf+2, size - 2);
@@ -83,9 +95,6 @@ void loop() {
         
         digitalWrite(LED_BUILTIN, LOW);
         Serial.write("Done");
-    case nop_e: break;
     }
-
   }
-
 }
